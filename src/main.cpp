@@ -1,7 +1,8 @@
 #include <iostream>
 #include "mySimpleComputer.h"
-//#include "myBigChars.h"
+#include "myBigChars.h"
 #include "myTerm.h"
+#include "printConsole.h"
 using namespace std;
 #define ll long long
 #define ld long double
@@ -30,12 +31,6 @@ int main() {
     int command,oper;
     sc_commandDecode(comand_coded,&command,&oper);
     cout << command << ' ' << oper << endl;*/
-    my_clrscr();
-    mt_setfgcolor(RED);
-    cout << "hello" << endl;
-    for (int i=0;i<10;++i){
-	cout << "+0000 ";
-    }
-    cout << endl;
+    printConsole();
     return 0;
 }

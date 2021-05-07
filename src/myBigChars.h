@@ -2,6 +2,7 @@
 #ifndef ARCHITECTURE_BIG_CH
 #pragma once
 #define ARCHITECTURE_BIG_CH
+#include "myTerm.h"
 int bc_printA(char* str);
 int bc_box(int x1, int y1, int x2, int y2);
 int bc_getbigcharpos(int* big, int x, int y, bool *value);
