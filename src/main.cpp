@@ -19,7 +19,7 @@ void print_mem(){
 }
 int main() {
     sc_memoryInit();
-    sc_memorySet(30,1);
+    sc_memorySet(30,0x34F3);
     int check;
     sc_memoryGet(30,&check);
     char str[10]="input.txt";

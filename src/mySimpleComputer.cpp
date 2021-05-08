@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include "mySimpleComputer.h"
+using namespace std;
 #define P 0
 #define O 1
 #define M 2
@@ -12,6 +13,28 @@
 #define F 5
 int all_com[]={10,11,20,21,30,31,32,33,40,41,42,43,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76};
 int sc_regSet(int reg, int value);
+void coutFlags(){
+    int val;
+    sc_regGet(P,&val);
+    if (val==1)
+        cout << "P ";
+    sc_regGet(O,&val);
+    if (val==1)
+        cout << "O ";
+    sc_regGet(M,&val);
+    if (val==1)
+        cout << "M ";
+    sc_regGet(T,&val);
+    if (val==1)
+        cout << "T ";
+    sc_regGet(E,&val);
+    if (val==1)
+        cout << "E ";
+    sc_regGet(F,&val);
+    if (val==1)
+        cout << "F ";
+
+}
 int sc_memoryInit(){
     for (int i=0;i<mem_size;++i){
         memory[i]=0;

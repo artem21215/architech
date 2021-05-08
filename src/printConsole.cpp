@@ -6,6 +6,7 @@
 #include "myBigChars.h"
 #include "myTerm.h"
 #include "printConsole.h"
+#include "mySimpleComputer.h"
 using namespace std;
 extern const int mem_size;
 extern int flag;
@@ -63,7 +64,7 @@ void coutSmallHex(vector<int> z){
     cout << ' ';
 }
 void coutBigHex(vector<int> cnt, int deltx, int delty){
-    bc_printbigchar(big[15],18+deltx,6+delty,BLUE,WHITE);
+    bc_printbigchar(big[16],18+deltx,6+delty,BLUE,WHITE);
     bc_printbigchar(big[cnt[0]],18+deltx,15+delty,BLUE,WHITE);
     bc_printbigchar(big[cnt[1]],18+deltx,24+delty,BLUE,WHITE);
     bc_printbigchar(big[cnt[2]],18+deltx,33+delty,BLUE,WHITE);
@@ -101,13 +102,16 @@ int printConsole(int deltx,int delty){
     mt_gotoXY(11+deltx,73+delty);
     cout << " Operation ";
     mt_gotoXY(12+deltx,75+delty);
-    cout << "+0000";
+    int comm,arg;
+    sc_commandDecode(memory[30],&comm,&arg);
+    vector<int> com=getHex(comm),op=getHex(arg);
+    cout << '+' << com[2] << com[3] << " : " << op[2] << op[3];
 
     bc_box(14+deltx,67+delty,3,22);
     mt_gotoXY(14+deltx,75+delty);
     cout << " Flags ";
     mt_gotoXY(15+deltx,75+delty);
-    cout << "+0000";
+    coutFlags();
 
     bc_box(17+deltx,5+delty,10,46);
     bc_box(17+deltx,51+delty,10,38);
@@ -129,7 +133,7 @@ int printConsole(int deltx,int delty){
     mt_gotoXY(24+deltx,52+delty);
     cout << " F6    -   instructionCounter ";
 
-    coutBigHex(getHex(memory[instructioncounter]),deltx,delty);
+    coutBigHex(getHex(memory[(int)instructioncounter]),deltx,delty);
 
     mt_gotoXY(50,0);
     return 0;

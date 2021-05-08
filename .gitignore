@@ -2,6 +2,7 @@
 *.o
 *.xml
 *.iml
+input.txt
 *.txt
 *.dat
 .idea
