@@ -2,8 +2,9 @@
 *.o
 *.xml
 *.iml
-input.txt
+*input.txt
 *.txt
 *.dat
 .idea
 *setting
+simple_computer
