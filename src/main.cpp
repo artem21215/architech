@@ -2,6 +2,7 @@
 #include "mySimpleComputer.h"
 #include "myBigChars.h"
 #include "myTerm.h"
+#include "myReadkey.h"
 #include "printConsole.h"
 using namespace std;
 #define ll long long
@@ -26,5 +27,8 @@ int main() {
     sc_memorySave(str);
     sc_memoryLoad(str);
     printConsole(0,30);
+
+
+
     return 0;
 }
