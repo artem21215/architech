@@ -4,5 +4,7 @@
 
 #ifndef ARCHITECH_PRINTCONSOLE_H
 #define ARCHITECH_PRINTCONSOLE_H
-void printConsole();
+extern short accum;
+extern char instructioncounter;
+int printConsole(int deltx,int delty);
 #endif //ARCHITECH_PRINTCONSOLE_H

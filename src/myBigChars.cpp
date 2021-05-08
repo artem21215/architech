@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include "myTerm.h"
+#include "myBigChars.h"
 #define ll long long
 using namespace std;
 int bc_printA(char* str){
@@ -29,13 +30,13 @@ int bc_box(int x1, int y1, int x2, int y2){
     mt_gotoXY(x1+x2+1,y1+y2+1);
     return 0;
 }
-int bc_getbigcharpos(int* big, int x, int y, bool *value){
+int bc_getbigcharpos(unsigned int* big, int x, int y, bool *value){
     if (x<0 || x>7)
         return -1;
     if (y<0 || y>7)
         return -1;
     ll it=0;
-    if (x>4){
+    if (x>3){
         it=1;
         x-=4;
     }
@@ -55,7 +56,7 @@ int bc_setbigcharpos(int* big, int x, int y, bool *value){
     return 0 ;
 }
 
-int bc_printbigchar(int big[2], int x, int y, enum colors color_text, enum colors color_back){
+int bc_printbigchar(unsigned int big[2], int x, int y, enum colors color_text, enum colors color_back){
     mt_setfgcolor(color_text);
     mt_setbgcolor(color_back);
     for (int i=0;i<8;++i){

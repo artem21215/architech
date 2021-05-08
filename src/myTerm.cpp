@@ -1,18 +1,9 @@
 #include <iostream>
 #include <termios.h>
 #include <sys/ioctl.h>
+#include "myTerm.h"
 #define ll long long
 using namespace std;
-enum colors{
-    BLACK=0,
-    RED=1,
-    GREEN=2,
-    YELLOW=3,
-    BLUE=4,
-    PURPLE=5,
-    CYANIC=6,
-    WHITE=7
-};
 int my_clrscr(){
     cout << "\E[H\E[J";
     return 0;
