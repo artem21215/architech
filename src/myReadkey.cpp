@@ -8,13 +8,53 @@
 #include <iostream>
 #include <unistd.h>
 #include <termios.h>
+#include <cstring>
 #include "myReadkey.h"
 using namespace std;
-int rk_readkey(enum keys *){
-    char buf[200];
-    for (int i=0;i<200;++i)
-        buf[i]=0;
-    int readCh=read(0,buf,1);
+int rk_readkey(keys & keys){
+    rk_mytermsave();
+    rk_mytermregime(0,0,1,0,1);
+    char ch_f5[]={27,91,49,53,126,0},
+            ch_f6[]={27,91,49,55,126,0},
+            ch_l[]={108,0},
+            ch_s[]={115,0},
+            ch_t[]={116,0},
+            ch_i[]={105,0},
+            ch_r[]={114,0};
+    char buf[200]="";
+    int readCh=read(0,buf,8);
+    rk_mytermregime(1,0,0,1,1);
+    if (strcmp(buf,ch_f5)==0){
+        keys=F5;
+        return 0;
+    }
+    if (strcmp(buf,ch_f6)==0){
+        keys=F6;
+        return 0;
+    }
+    if (strcmp(buf,ch_l)==0){
+        keys=l;
+        return 0;
+    }
+    if (strcmp(buf,ch_s)==0){
+        keys=s;
+        return 0;
+    }
+    if (strcmp(buf,ch_i)==0){
+        keys=i;
+        return 0;
+    }
+    if (strcmp(buf,ch_t)==0){
+        keys=t;
+        return 0;
+    }
+    if (strcmp(buf,ch_r)==0){
+        keys=r;
+        return 0;
+    }
+    if (readCh==0)
+        return -1;
+    keys=e;
     return 0;
 }
 int rk_mytermsave(){
@@ -53,23 +93,22 @@ int rk_mytermregime(int regime, int vtime, int vmin, int echo, int sigint){
         options.c_lflag&=~ICANON;
     else
         return -1;
-    if (regime==0){
-        options.c_cc[VTIME]=vtime;
-        options.c_cc[VMIN]=vmin;
-        if (echo==1){
-            options.c_lflag|=ECHO;
-        }
-        else if (echo==0)
-            options.c_lflag&=~ECHO;
-        else
-            return -1;
-        if (sigint==1)
-            options.c_lflag|=ISIG;
-        else if (sigint==0)
-            options.c_lflag&=~ISIG;
-        else
-            return -1;
+    if (regime==0) {
+        options.c_cc[VTIME] = vtime;
+        options.c_cc[VMIN] = vmin;
     }
+    if (echo == 1) {
+        options.c_lflag |= ECHO;
+    } else if (echo == 0)
+        options.c_lflag &= (~ECHO);
+    else
+        return -1;
+    if (sigint == 1)
+        options.c_lflag |= ISIG;
+    else if (sigint == 0)
+        options.c_lflag &= ~ISIG;
+    else
+        return -1;
     if (tcsetattr(STDIN_FILENO,TCSANOW,&options)!=0)
         return -1;
     return 0;

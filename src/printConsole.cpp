@@ -135,7 +135,8 @@ int printConsole(int deltx,int delty){
 
     coutBigHex(getHex(memory[(int)instructioncounter]),deltx,delty);
 
-    mt_gotoXY(50,0);
+    mt_gotoXY(30,0);
+    cout << endl;
     return 0;
 }
 
