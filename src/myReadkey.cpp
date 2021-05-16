@@ -10,7 +10,42 @@
 #include <termios.h>
 #include <cstring>
 #include "myReadkey.h"
+#include "printConsole.h"
+#include "mySimpleComputer.h"
 using namespace std;
+int doTimer(){
+    if (instructioncounter>=99){
+        sc_regSet(M,1);
+        return 1;
+    }
+    sc_regSet(M,0);
+    instructioncounter++;
+    return 0;
+}
+int doAccum(){
+    cout << "input value of accumulator: ";
+    int value;
+    cin >> value;
+    if (value<0 || value>32767){
+        sc_regSet(M,1);
+        return 1;
+    }
+    sc_regSet(M,0);
+    accum = value;
+    return 0;
+}
+int doInstrCounter(){
+    cout << "input value of instructioncounter: ";
+    int help;
+    cin >> help;
+    if (help<0 || help>99){
+        sc_regSet(M,1);
+        return 1;
+    }
+    sc_regSet(M,0);
+    instructioncounter = help;
+    return 0;
+}
 int rk_readkey(keys & keys){
     rk_mytermsave();
     rk_mytermregime(0,0,1,0,1);

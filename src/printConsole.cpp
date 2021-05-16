@@ -53,6 +53,17 @@ void printColorSquare(int x1,int y1,int x2,int y2){
         }
     }
 }
+void coutTwoChSmallHex(vector<int> z){
+    if (z[4]<10)
+        cout << z[4];
+    else
+        cout << (char)(z[4]-10+'A');
+    if (z[3]<10)
+        cout << z[3];
+    else
+        cout << (char)(z[3]-10+'A');
+    cout << ' ';
+}
 void coutSmallHex(vector<int> z){
     cout << '+';
     for (int i=0;i<4;++i){
@@ -74,7 +85,13 @@ void coutMem(int deltx,int delty){
     for (int i=0;i<10;++i){
         mt_gotoXY(6+i+deltx,6+delty);
         for (int j=0;j<10;++j){
-            coutSmallHex(getHex(memory[i*10+j]));
+            if (i*10+j==instructioncounter) {
+                mt_setbgcolor(BLACK);
+                coutSmallHex(getHex(memory[i*10+j]));
+                mt_setbgcolor(GREEN);
+            }
+            else
+                coutSmallHex(getHex(memory[i*10+j]));
             //cout << "+0000 ";
         }
     }
@@ -103,15 +120,18 @@ int printConsole(int deltx,int delty){
     cout << " Operation ";
     mt_gotoXY(12+deltx,75+delty);
     int comm,arg;
-    sc_commandDecode(memory[30],&comm,&arg);
-    vector<int> com=getHex(comm),op=getHex(arg);
-    cout << '+' << com[2] << com[3] << " : " << op[2] << op[3];
+    sc_commandDecode(memory[instructioncounter],&comm,&arg);
+    cout << '+';
+    coutTwoChSmallHex(getHex(comm));
+    cout << ": ";
+    coutTwoChSmallHex(getHex(arg));
+    //cout << '+' << com[2] << com[3] << " : " << op[2] << op[3];
 
     bc_box(14+deltx,67+delty,3,22);
     mt_gotoXY(14+deltx,75+delty);
     cout << " Flags ";
-    mt_gotoXY(15+deltx,75+delty);
-    coutFlags();
+    mt_gotoXY(15+deltx,74+delty);
+    coutFlags(15+deltx,74+delty);
 
     bc_box(17+deltx,5+delty,10,46);
     bc_box(17+deltx,51+delty,10,38);

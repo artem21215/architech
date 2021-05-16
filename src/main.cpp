@@ -5,6 +5,7 @@
 #include "myTerm.h"
 #include "myReadkey.h"
 #include "printConsole.h"
+#include "timer.h"
 
 using namespace std;
 #define ll long long
@@ -12,8 +13,9 @@ using namespace std;
 int flag = 0;
 const int mem_size = 100;
 short memory[100];
-short accum = 8234;
-char instructioncounter = 30;
+short accum = 0;
+char instructioncounter = 0;
+int deltx=0,delty=30;
 
 void print_mem() {
     for (int i : memory) {
@@ -23,37 +25,46 @@ void print_mem() {
 }
 
 int main() {
-    keys ch = i;
+    keys ch = l;
     char str[10] = "input.txt";
     sc_memoryInit();
+    reset();
     while (ch != e) {
         bool br=false;
-        printConsole(0,30);
+        printConsole(deltx,delty);
+        int val;
+        sc_regGet(T,&val);
+        if (val!=0)
+            continue;
         rk_readkey(ch);
         switch (ch) {
             case l:
                 sc_memoryLoad(str);
                 break;
             case s:
-                sc_memoryLoad(str);
+                sc_memorySave(str);
                 break;
             case F5:
-                cout << "input value of accumulator: ";
-                short value;
-                cin >> value;
-                accum = value;
+                doAccum();
                 break;
             case F6:
-                cout << "input value of instructioncounter: ";
-                int help;
-                cin >> help;
-                instructioncounter = help;
+                doInstrCounter();
                 break;
             case t:
+                doTimer();
                 break;
             case i:
+                res_signal();
                 break;
             case r:
+                sc_regSet(T,1);
+                my_timer();
+                while (instructioncounter<99){
+
+                }
+                stopHandler(0);
+                sc_regSet(T,0);
+                printConsole(deltx,delty);
                 break;
             case e:
                 br=true;

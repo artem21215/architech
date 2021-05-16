@@ -4,36 +4,48 @@
 #include <iostream>
 #include <fstream>
 #include "mySimpleComputer.h"
+#include "myTerm.h"
 using namespace std;
-#define P 0
-#define O 1
-#define M 2
-#define T 3
-#define E 4
-#define F 5
 int all_com[]={10,11,20,21,30,31,32,33,40,41,42,43,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76};
 int sc_regSet(int reg, int value);
-void coutFlags(){
+void coutFlags(int deltx,int delty){
     int val;
+    cout << "P O M T E";
     sc_regGet(P,&val);
-    if (val==1)
-        cout << "P ";
+    if (val!=0) {
+        mt_gotoXY(deltx,delty);
+        mt_setbgcolor(RED);
+        cout << "P";
+        mt_setbgcolor(GREEN);
+    }
     sc_regGet(O,&val);
-    if (val==1)
-        cout << "O ";
+    if (val!=0){
+        mt_gotoXY(deltx,delty+2);
+        mt_setbgcolor(RED);
+        cout << "O";
+        mt_setbgcolor(GREEN);
+    }
     sc_regGet(M,&val);
-    if (val==1)
-        cout << "M ";
+    if (val!=0){
+        mt_gotoXY(deltx,delty+4);
+        mt_setbgcolor(RED);
+        cout << "M";
+        mt_setbgcolor(GREEN);
+    }
     sc_regGet(T,&val);
-    if (val==1)
-        cout << "T ";
+    if (val!=0){
+        mt_gotoXY(deltx,delty+6);
+        mt_setbgcolor(RED);
+        cout << "T";
+        mt_setbgcolor(GREEN);
+    }
     sc_regGet(E,&val);
-    if (val==1)
-        cout << "E ";
-    sc_regGet(F,&val);
-    if (val==1)
-        cout << "F ";
-
+    if (val!=0){
+        mt_gotoXY(deltx,delty+8);
+        mt_setbgcolor(RED);
+        cout << "E";
+        mt_setbgcolor(GREEN);
+    }
 }
 int sc_memoryInit(){
     for (int i=0;i<mem_size;++i){
@@ -98,10 +110,10 @@ int sc_regGet (int reg, int * value){
 }
 int sc_regSet(int reg, int value){
     if (reg>=0 && reg<=5 && value>=0 && value<=1){
-        if (value){
+        if (value==1){
             flag=flag|(1<<reg);
         }
-        else
+        else if (value==0)
             flag=flag&(~(1<<reg));
         return 0;
     }
@@ -140,6 +152,7 @@ int sc_commandEncode (int command, int operand, int * value){
     return 0;
 }
 int sc_commandDecode (int value, int * command, int * operand){
+    sc_regSet(E,0);
     *command=0;
     for (int i=0;i<7;++i){
         int elem;
@@ -160,8 +173,9 @@ int sc_commandDecode (int value, int * command, int * operand){
     }
     int i;
     for (i=0;i<76;++i){
-        if (*command==all_com[i])
+        if (*command==all_com[i]) {
             break;
+        }
     }
     if (i==76) {
         sc_regSet(E,1);

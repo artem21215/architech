@@ -18,4 +18,7 @@ int rk_readkey(keys & keys);
 int rk_mytermsave();
 int rk_mytermrestore();
 int rk_mytermregime(int regime, int vtime, int vmin, int echo, int sigint);
+int doInstrCounter();
+int doAccum();
+int doTimer();
 #endif //ARCHITECH_MYREADKEY_H
