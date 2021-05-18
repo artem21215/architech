@@ -134,7 +134,7 @@ int sc_commandEncode (int command, int operand, int * value){
         sc_regSet(E,1);
         return 1;
     }
-    if (command==10 || command==11 || command==20 || command==21)
+    //if (command==10 || command==11 || command==20 || command==21)
     *value=0;
     for (int i=0;i<7;++i){
         int elem=operand&(1<<i);

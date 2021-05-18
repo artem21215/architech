@@ -26,7 +26,7 @@ int doAccum(){
     cout << "input value of accumulator: ";
     int value;
     cin >> value;
-    if (value<0 || value>32767){
+    if (value<-32768 || value>32767){
         sc_regSet(M,1);
         return 1;
     }

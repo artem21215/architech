@@ -30,7 +30,8 @@ unsigned int big[][2]={
         {0xFFC0C0C0, 0xFFC0C0FF},
         {0xFFC0C0FF, 0xC0C0C0C0},
         {0x003C3CFF, 0xFF3C3C00},
-        {0x003C3C00, 0x003C3C00}
+        {0x003C3C00, 0x003C3C00},
+        {0x000000FF, 0xFF000000}
 };
 vector<int> getHex(short z){
     vector<int> ans(4);
@@ -64,8 +65,11 @@ void coutTwoChSmallHex(vector<int> z){
         cout << (char)(z[3]-10+'A');
     cout << ' ';
 }
-void coutSmallHex(vector<int> z){
-    cout << '+';
+void coutSmallHex(vector<int> z, int cur){
+    if (cur>=0)
+        cout << '+';
+    else
+        cout << '-';
     for (int i=0;i<4;++i){
         if (z[i]<10)
             cout << z[i];
@@ -74,8 +78,11 @@ void coutSmallHex(vector<int> z){
     }
     cout << ' ';
 }
-void coutBigHex(vector<int> cnt, int deltx, int delty){
-    bc_printbigchar(big[16],18+deltx,6+delty,BLUE,WHITE);
+void coutBigHex(vector<int> cnt, int deltx, int delty, int cur){
+    if (cur>=0)
+        bc_printbigchar(big[16],18+deltx,6+delty,BLUE,WHITE);
+    else
+        bc_printbigchar(big[18],18+deltx,6+delty,BLUE,WHITE);
     bc_printbigchar(big[cnt[0]],18+deltx,15+delty,BLUE,WHITE);
     bc_printbigchar(big[cnt[1]],18+deltx,24+delty,BLUE,WHITE);
     bc_printbigchar(big[cnt[2]],18+deltx,33+delty,BLUE,WHITE);
@@ -87,11 +94,11 @@ void coutMem(int deltx,int delty){
         for (int j=0;j<10;++j){
             if (i*10+j==instructioncounter) {
                 mt_setbgcolor(BLACK);
-                coutSmallHex(getHex(memory[i*10+j]));
+                coutSmallHex(getHex(abs(memory[i*10+j])),memory[i*10+j]);
                 mt_setbgcolor(GREEN);
             }
             else
-                coutSmallHex(getHex(memory[i*10+j]));
+                coutSmallHex(getHex(abs(memory[i*10+j])),memory[i*10+j]);
             //cout << "+0000 ";
         }
     }
@@ -107,24 +114,28 @@ int printConsole(int deltx,int delty){
     mt_gotoXY(5+deltx,71+delty);
     cout << " accumulator ";
     mt_gotoXY(6+deltx,75+delty);
-    coutSmallHex(getHex(accum));
+    coutSmallHex(getHex(abs(accum)),accum);
 
     bc_box(8+deltx,67+delty,3,22);
     mt_gotoXY(8+deltx,68+delty);
     cout << " instructionCounter ";
     mt_gotoXY(9+deltx,75+delty);
-    coutSmallHex(getHex(instructioncounter));
+    coutSmallHex(getHex(instructioncounter),instructioncounter);
 
     bc_box(11+deltx,67+delty,3,22);
     mt_gotoXY(11+deltx,73+delty);
     cout << " Operation ";
     mt_gotoXY(12+deltx,75+delty);
     int comm,arg;
-    sc_commandDecode(memory[instructioncounter],&comm,&arg);
-    cout << '+';
-    coutTwoChSmallHex(getHex(comm));
-    cout << ": ";
-    coutTwoChSmallHex(getHex(arg));
+    if (sc_commandDecode(memory[instructioncounter],&comm,&arg)==0) {
+        cout << '+';
+        coutTwoChSmallHex(getHex(comm));
+        cout << ": ";
+        coutTwoChSmallHex(getHex(arg));
+    }
+    else{
+        cout << "+00 : 00";
+    }
     //cout << '+' << com[2] << com[3] << " : " << op[2] << op[3];
 
     bc_box(14+deltx,67+delty,3,22);
@@ -153,7 +164,7 @@ int printConsole(int deltx,int delty){
     mt_gotoXY(24+deltx,52+delty);
     cout << " F6    -   instructionCounter ";
 
-    coutBigHex(getHex(memory[(int)instructioncounter]),deltx,delty);
+    coutBigHex(getHex(abs(memory[(int)instructioncounter])),deltx,delty,memory[(int)instructioncounter]);
 
     mt_gotoXY(30,0);
     cout << endl;

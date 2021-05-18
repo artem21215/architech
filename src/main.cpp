@@ -27,7 +27,7 @@ void print_mem() {
 
 int main() {
     keys ch = l;
-    char str[10] = "input.txt";
+    char str[10] = "input.o";
     sc_memoryInit();
     reset();
     while (ch != e) {
