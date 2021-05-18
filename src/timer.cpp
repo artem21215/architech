@@ -6,6 +6,7 @@
 #include <signal.h>
 #include "timer.h"
 #include "printConsole.h"
+#include "cu.h"
 struct itimerval newTime, oldTime;
 void res_signal(){
     raise(SIGUSR1);
@@ -28,14 +29,13 @@ void stopHandler(int signaly){
     setitimer(ITIMER_REAL, &newTime, &oldTime);
 }
 void handler(int signaly){
-    instructioncounter++;
-    printConsole(deltx,delty);
+    cu();
 }
 void my_timer(){
     signal(SIGALRM, handler);
     newTime.it_interval.tv_sec = 0;
-    newTime.it_interval.tv_usec = 200000;
+    newTime.it_interval.tv_usec = 500000;
     newTime.it_value.tv_sec = 0;
-    newTime.it_value.tv_usec = 200000;
+    newTime.it_value.tv_usec = 500000;
     setitimer(ITIMER_REAL, &newTime, &oldTime);
 }

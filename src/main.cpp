@@ -6,6 +6,7 @@
 #include "myReadkey.h"
 #include "printConsole.h"
 #include "timer.h"
+#include "cu.h"
 
 using namespace std;
 #define ll long long
@@ -15,7 +16,7 @@ const int mem_size = 100;
 short memory[100];
 short accum = 0;
 char instructioncounter = 0;
-int deltx=0,delty=30;
+int deltx = 0, delty = 30;
 
 void print_mem() {
     for (int i : memory) {
@@ -30,12 +31,10 @@ int main() {
     sc_memoryInit();
     reset();
     while (ch != e) {
-        bool br=false;
-        printConsole(deltx,delty);
+        bool br = false;
         int val;
-        sc_regGet(T,&val);
-        if (val!=0)
-            continue;
+        sc_regSet(T, 1);
+        printConsole(deltx, delty);
         rk_readkey(ch);
         switch (ch) {
             case l:
@@ -51,23 +50,29 @@ int main() {
                 doInstrCounter();
                 break;
             case t:
-                doTimer();
+                cu();
                 break;
             case i:
                 res_signal();
                 break;
             case r:
-                sc_regSet(T,1);
+                rk_mytermsave();
+                rk_mytermregime(0, 0, 0, 0, 0);
+                sc_regSet(T, 0);
                 my_timer();
-                while (instructioncounter<99){
-
+                while (true){
+                    int exit;
+                    sc_regGet(T,&exit);
+                    if (exit!=0)
+                        break;
                 }
                 stopHandler(0);
-                sc_regSet(T,0);
-                printConsole(deltx,delty);
+                sc_regSet(T, 0);
+                printConsole(deltx, delty);
+                rk_mytermrestore();
                 break;
             case e:
-                br=true;
+                br = true;
                 break;
         }
         if (br)

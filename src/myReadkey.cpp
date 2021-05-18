@@ -34,6 +34,14 @@ int doAccum(){
     accum = value;
     return 0;
 }
+int get_int_from_terminal(int &val){
+    rk_mytermsave();
+    rk_mytermregime(1,0,0,1,1);
+    cout << "input value for command READ: ";
+    cin >> val;
+    rk_mytermrestore();
+    return 0;
+}
 int doInstrCounter(){
     cout << "input value of instructioncounter: ";
     int help;
