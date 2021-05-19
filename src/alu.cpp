@@ -113,7 +113,7 @@ int alu(int command,int operand){
                 sc_regSet(M,1);
                 return 1;
             }
-            if (accum==0 || memory[operand]>32767/accum){
+            if (accum!=0 && abs(memory[operand])>32767/abs(accum)){
                 sc_regSet(P,1);
                 return 1;
             }
@@ -124,7 +124,7 @@ int alu(int command,int operand){
                 sc_regSet(M,1);
                 return 1;
             }
-            instructioncounter=operand;
+            instructioncounter=operand-1;
             break;
         case 41:
             if (operand<0 || operand>=100){
@@ -132,7 +132,7 @@ int alu(int command,int operand){
                 return 1;
             }
             if (accum<0)
-                instructioncounter=operand;
+                instructioncounter=operand-1;
             break;
         case 42:
             if (operand<0 || operand>=100){
@@ -140,7 +140,7 @@ int alu(int command,int operand){
                 return 1;
             }
             if (accum==0)
-                instructioncounter=operand;
+                instructioncounter=operand-1;
             break;
         case 43:
             stopHandler(0);

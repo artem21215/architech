@@ -17,9 +17,16 @@ int cu(){
     }
     sc_regSet(M,0);
     int value,command;
+    int zeroflag;
+    sc_regGet(T,&zeroflag);
     if (sc_commandDecode(memory[instructioncounter],&command,&value)==0){
         alu(command,value);
-        instructioncounter++;
+        if (flag==zeroflag)
+            instructioncounter++;
+        else{
+            stopHandler(0);
+            sc_regSet(T,1);
+        }
     }
     else{
         stopHandler(0);

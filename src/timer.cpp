@@ -34,8 +34,8 @@ void handler(int signaly){
 void my_timer(){
     signal(SIGALRM, handler);
     newTime.it_interval.tv_sec = 0;
-    newTime.it_interval.tv_usec = 500000;
+    newTime.it_interval.tv_usec = 10000;
     newTime.it_value.tv_sec = 0;
-    newTime.it_value.tv_usec = 500000;
+    newTime.it_value.tv_usec = 10000;
     setitimer(ITIMER_REAL, &newTime, &oldTime);
 }

@@ -55,6 +55,11 @@ void printColorSquare(int x1,int y1,int x2,int y2){
     }
 }
 void coutTwoChSmallHex(vector<int> z){
+    /*cout << "##";
+    for (auto v:z)
+        cout << v << ' ';
+    cout << "##";
+    cout << endl;*/
     if (z[4]<10)
         cout << z[4];
     else
@@ -129,9 +134,11 @@ int printConsole(int deltx,int delty){
     int comm,arg;
     if (sc_commandDecode(memory[instructioncounter],&comm,&arg)==0) {
         cout << '+';
-        coutTwoChSmallHex(getHex(comm));
+        //  coutTwoChSmallHex(getHex(comm));
+        cout << comm;
         cout << ": ";
-        coutTwoChSmallHex(getHex(arg));
+        cout << arg;
+        //coutTwoChSmallHex(getHex(arg));
     }
     else{
         cout << "+00 : 00";
