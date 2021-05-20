@@ -1,7 +1,11 @@
 #include "mySimpleAssebler.h"
 void parse_AC(string &spos, string &scom, string &sval){
     int pos=(spos[0]-'0')*10+spos[1]-'0';
-    int val=(sval[0]-'0')*10+sval[1]-'0';
+    int val;
+    if (sval.size()==1)
+        val=sval[0]-'0';
+    else
+        val=(sval[0]-'0')*10+sval[1]-'0';
     int com=0;
     if (scom=="READ")
         com=10;
@@ -115,6 +119,7 @@ int check_up(string spos, string scom, string sval){
         return 0;
     for (auto &v:sval){
         if (v>='a' && v<='z') {
+            cout << endl;
             return 1;
         }
     }
@@ -124,13 +129,12 @@ int check_up(string spos, string scom, string sval){
 int func_output(int prior){
     prog[prior].num_mem=pointer++;
     string buf;
-    if (pointer<10)
+    if (pointer<10+1)
         buf+='0';
     buf+=to_string(prog[prior].num_mem);
     buf+=' ';
     buf+="WRITE ";
     buf+=to_string(99-(prog[prior].val[0]-'A'));
-    cout << buf << endl;
     ans.push_back(buf);
     return 0;
 }
@@ -138,13 +142,12 @@ int func_output(int prior){
 int func_input(int prior){
     prog[prior].num_mem=pointer++;
     string buf;
-    if (pointer<10)
+    if (pointer<10+1)
         buf+='0';
     buf+=to_string(prog[prior].num_mem);
     buf+=' ';
     buf+="READ ";
     buf+=to_string(99-(prog[prior].val[0]-'A'));
-    cout << buf << endl;
     ans.push_back(buf);
     return 0;
 }
@@ -152,12 +155,11 @@ int func_input(int prior){
 int func_end(int prior){
     prog[prior].num_mem=pointer++;
     string buf;
-    if (pointer<10)
+    if (pointer<10+1)
         buf+='0';
     buf+=to_string(prog[prior].num_mem);
     buf+=' ';
     buf+="HALT ";
-    cout << buf << endl;
     ans.push_back(buf);
     return 0;
 }
@@ -165,13 +167,12 @@ int func_end(int prior){
 int func_if_goto(int prior){
     string buf;
     prog[prior].num_mem=pointer++;
-    if (pointer<10)
+    if (pointer<10+1)
         buf+='0';
     buf+=to_string(pointer-1);
     buf+=" LOAD ";
     string sval=prog[prior].val;
     buf+=to_string(99-sval[0]+'A');
-    cout << buf << endl;
     ans.push_back(buf);
 
     buf.clear();
@@ -184,7 +185,7 @@ int func_if_goto(int prior){
     for (;i<sval.size();++i)
         buf+=sval[i];
     buf+='~';
-    if (pointer<10)
+    if (pointer<10+1)
         buf+='0';
     buf+=to_string(pointer-1);
     buf+=' ';
@@ -194,7 +195,6 @@ int func_if_goto(int prior){
         buf+="JNEG";
     else
         return 1;
-    cout << buf << endl;
     ans.push_back(buf);
     return 0;
 }
@@ -205,18 +205,186 @@ int func_goto(int prior){
     buf+="~";
     buf+=prog[prior].val;
     buf+="~";
-    if (pointer<10)
+    if (pointer<10+1)
         buf+='0';
     buf+=to_string(prog[prior].num_mem);
     buf+=' ';
     buf+="JUMP ";
-    cout << buf << endl;
     ans.push_back(buf);
     return 0;
 }
+int do_polsk(char ch, stack<char> &oper, map<char,int> &prior_oper, string &polsk){
+    if (ch>='A' && ch<='Z'){
+        polsk+=ch;
+    }
+    else{
+        if (oper.empty())
+            oper.push(ch);
+        else{
+            char top=oper.top();
+            while (prior_oper[top]<=prior_oper[ch] && ch!='('){
+                oper.pop();
+                polsk += top;
+                if (oper.empty())
+                    break;
+                top=oper.top();
+                if (top=='(')
+                    break;
+            }
+            if (ch!=')')
+                oper.push(ch);
+            else
+                oper.pop();
+        }
+    }
+    return 0;
+}
 
+int cnt_var_let=0;
+int calc_polsk(string polsk){
+    if (polsk.size()==1){
+        string buf;
+        pointer++;
+        if (pointer<10+1)
+            buf+='0';
+        buf+=to_string(pointer-1);
+        buf+=' ';
+        buf+="LOAD ";
+        buf+=to_string(99-polsk[0]+'A');
+        ans.push_back(buf);
+        buf.clear();
+    }
+    stack<char> simb;
+    string buf;
+    for (auto v:polsk){
+        if (v>='A' && v<='Z'){
+            simb.push(v);
+        }
+        else{
+            char v2=simb.top();
+            simb.pop();
+            char v1=simb.top();
+            simb.pop();
+
+            pointer++;
+            if (pointer<10+1)
+                buf+='0';
+            buf+=to_string(pointer-1);
+            buf+=' ';
+            buf+="LOAD ";
+            buf+=to_string(99-v1+'A');
+            ans.push_back(buf);
+            buf.clear();
+            char ch=v;
+            if (ch=='+'){
+                pointer++;
+                if (pointer<10+1)
+                    buf+='0';
+                buf+=to_string(pointer-1);
+                buf+=' ';
+                buf+="ADD ";
+                buf+=to_string(99-v2+'A');
+                ans.push_back(buf);
+            }
+            else if (ch=='-'){
+                pointer++;
+                if (pointer<10+1)
+                    buf+='0';
+                buf+=to_string(pointer-1);
+                buf+=' ';
+                buf+="SUB ";
+                buf+=to_string(99-v2+'A');
+                ans.push_back(buf);
+            }
+            else if (ch=='/'){
+                pointer++;
+                if (pointer<10+1)
+                    buf+='0';
+                buf+=to_string(pointer-1);
+                buf+=' ';
+                buf+="DIVIDE ";
+                buf+=to_string(99-v2+'A');
+                ans.push_back(buf);
+            }
+            else if (ch=='*'){
+                pointer++;
+                if (pointer<10+1)
+                    buf+='0';
+                buf+=to_string(pointer-1);
+                buf+=' ';
+                buf+="MUL ";
+                buf+=to_string(99-v2+'A');
+                ans.push_back(buf);
+            }
+
+            buf.clear();
+            pointer++;
+            simb.push('Z'+1+cnt_var_let);
+            if (pointer<10+1)
+                buf+='0';
+            buf+=to_string(pointer-1);
+            buf+=' ';
+            buf+="STORE ";
+            buf+=to_string(99-26-cnt_var_let);
+            cnt_var_let++;
+            ans.push_back(buf);
+            buf.clear();
+        }
+    }
+    return 0;
+}
+
+int assign_to_let_var(char var){
+    pointer++;
+    string buf;
+    char rez=99-26-cnt_var_let;
+    if (pointer<10+1)
+        buf+='0';
+    buf+=to_string(pointer-1);
+    buf+=' ';
+    buf+="STORE ";
+    buf+=to_string(99-var+'A');
+    ans.push_back(buf);
+    return 0;
+}
 int func_let(int prior){
+    prog[prior].num_mem=pointer;
+    map<char,int> prior_oper;
+    prior_oper['(']=3;
+    prior_oper[')']=3;
+    prior_oper['*']=1;
+    prior_oper['/']=1;
+    prior_oper['+']=2;
+    prior_oper['-']=2;
+    string polsk,sval=prog[prior].val;
+    if (sval[2]>='0' && sval[2]<='9')
+        return 0;
+    stack<char> oper;
+    for (int i=2;i<sval.size();++i){
+        do_polsk(sval[i],oper,prior_oper,polsk);
+    }
+    while (!oper.empty()){
+        char top=oper.top();
+        polsk+=top;
+        oper.pop();
+    }
+    calc_polsk(polsk);
+    assign_to_let_var(prog[prior].val[0]);
+    return 0;
+}
+int func_const(int prior){
+    string buf;
+    string sval=prog[prior].val;
+    buf+=to_string(99-sval[0]+'A');
+    buf+=" = +";
+    string const_var;
+    for (int i=2;i<sval.size();++i)
+        const_var+=sval[i];
 
+    for (int i=0;i<4-const_var.size();++i)
+        buf+='0';
+    buf+=const_var;
+    myconst.push_back(buf);
     return 0;
 }
 int parse_basic() {
@@ -238,7 +406,10 @@ int parse_basic() {
             func_end(v.first);
         }
         else if (v.second.comb=="LET"){
-            func_let(v.first);
+            if (v.second.val[2]>='0' && v.second.val[2]<='9')
+                func_const(v.first);
+            else
+                func_let(v.first);
         }
     }
     return 0;
@@ -249,6 +420,44 @@ int calc_pos(string &help){
         pos=pos*10+help[i]-'0';
     }
     return pos;
+}
+int delete_space(string &sval){
+    string help;
+    for (auto v:sval){
+        if (v!=' ')
+            help+=v;
+    }
+    return 0;
+}
+void fix_translate(){
+    for (auto &v:ans){
+        if (v[0]=='~'){
+            string fix;
+            string to;
+            int i;
+            for (i=1;v[i]!='~';++i)
+                to+=v[i];
+            i++;
+            for (;i<v.size();++i)
+                fix += v[i];
+            fix+=to_string(prog[calc_pos(to)].num_mem);
+            v=fix;
+        }
+        else if (v[0]=='$'){
+            string fix;
+            if (pointer<10)
+                fix+='0';
+            fix+=to_string(pointer++);
+            fix+=' ';
+            for (int i=2;i<v.size();++i)
+                fix+=v[i];
+            v=fix;
+        }
+    }
+}
+void add_myconst(){
+    for (auto &v:myconst)
+        ans.push_back(v);
 }
 int SimpleBasic(string namebsk) {
     //cout << namebsk << endl;
@@ -275,6 +484,7 @@ int SimpleBasic(string namebsk) {
         pos = help[0];
         com = help[1];
         val = help[2];
+        delete_space(val);
         int position = calc_pos(help[0]);
         prog[position].comb = com;
         prog[position].val = val;
@@ -284,8 +494,14 @@ int SimpleBasic(string namebsk) {
             return 1;
         }
     }
-    cout << endl;
     parse_basic();
+    add_myconst();
+    fix_translate();
+
+    ofstream out("myprog.sa");
+    for (auto &v:ans)
+        out << v << '\n';
+    out.close();
     return 0;
 }
 

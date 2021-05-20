@@ -8,4 +8,5 @@
 .idea
 simple_computer
 simpleAssembler/Makefile
-simpleAssembler/myprog.bs
+setting
+simpleAssembler/myprog.sa

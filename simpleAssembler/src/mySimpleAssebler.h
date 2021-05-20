@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <stack>
 #include <map>
 using namespace std;
 struct layers{
@@ -19,6 +20,8 @@ vector<short> mem(100);
 int pointer=0;
 map<int,layers> prog;
 vector<string> ans;
+vector<string> myconst;
+int calc_pos(string &help);
 void parse_AC(string &spos, string &scom, string &sval);
 int check_up(string spos, string scom, string sval);
 int func_input(int prior);
