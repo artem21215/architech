@@ -1,5 +1,5 @@
 //
-// Created by artem on 18.05.2021.
+// Created by ilya on 18.05.2021.
 //
 
 #ifndef ARCHITECH_CU_H

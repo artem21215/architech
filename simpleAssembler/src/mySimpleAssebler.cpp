@@ -462,6 +462,8 @@ void add_myconst(){
 int SimpleBasic(string namebsk) {
     //cout << namebsk << endl;
     ifstream in(namebsk);
+    if (!in)
+        return 1;
     string line;
     string pos, com, val;
     string word;

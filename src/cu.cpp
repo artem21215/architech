@@ -1,5 +1,5 @@
 //
-// Created by artem on 18.05.2021.
+// Created by ilya on 18.05.2021.
 //
 #include <iostream>
 using namespace std;
@@ -21,11 +21,10 @@ int cu(){
     sc_regGet(T,&zeroflag);
     if (sc_commandDecode(memory[instructioncounter],&command,&value)==0){
         alu(command,value);
-        if (flag==zeroflag)
-            instructioncounter++;
-        else{
+        instructioncounter++;
+        if (flag!=zeroflag) {
             stopHandler(0);
-            sc_regSet(T,1);
+            sc_regSet(T, 1);
         }
     }
     else{

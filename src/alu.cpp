@@ -1,5 +1,5 @@
 //
-// Created by artem on 17.05.2021.
+// Created by ilya on 17.05.2021.
 //
 using namespace std;
 #include <iostream>
@@ -49,6 +49,7 @@ int alu(int command,int operand){
             sc_regGet(T,&check);
             if (check==0)
                 my_timer();
+            sc_regSet(T,1);
             break;
         case 20:
             if (operand<0 || operand>=100){

@@ -1,5 +1,5 @@
 //
-// Created by artem on 07.05.2021.
+// Created by ilya on 07.05.2021.
 //
 #include <iostream>
 #include <vector>
@@ -45,7 +45,7 @@ vector<int> getHex(short z){
     return ans;
 }
 void printColorSquare(int x1,int y1,int x2,int y2){
-    mt_setbgcolor(GREEN);
+    mt_setbgcolor(CYANIC);
     mt_gotoXY(x1,y1);
     for (int i=0;i<x2;++i) {
         mt_gotoXY(5+i,y1);
@@ -85,13 +85,13 @@ void coutSmallHex(vector<int> z, int cur){
 }
 void coutBigHex(vector<int> cnt, int deltx, int delty, int cur){
     if (cur>=0)
-        bc_printbigchar(big[16],18+deltx,6+delty,BLUE,WHITE);
+        bc_printbigchar(big[16],18+deltx,6+delty,RED,WHITE);
     else
-        bc_printbigchar(big[18],18+deltx,6+delty,BLUE,WHITE);
-    bc_printbigchar(big[cnt[0]],18+deltx,15+delty,BLUE,WHITE);
-    bc_printbigchar(big[cnt[1]],18+deltx,24+delty,BLUE,WHITE);
-    bc_printbigchar(big[cnt[2]],18+deltx,33+delty,BLUE,WHITE);
-    bc_printbigchar(big[cnt[3]],18+deltx,42+delty,BLUE,WHITE);
+        bc_printbigchar(big[18],18+deltx,6+delty,RED,WHITE);
+    bc_printbigchar(big[cnt[0]],18+deltx,15+delty,RED,WHITE);
+    bc_printbigchar(big[cnt[1]],18+deltx,24+delty,RED,WHITE);
+    bc_printbigchar(big[cnt[2]],18+deltx,33+delty,RED,WHITE);
+    bc_printbigchar(big[cnt[3]],18+deltx,42+delty,RED,WHITE);
 }
 void coutMem(int deltx,int delty){
     for (int i=0;i<10;++i){
@@ -100,7 +100,7 @@ void coutMem(int deltx,int delty){
             if (i*10+j==instructioncounter) {
                 mt_setbgcolor(BLACK);
                 coutSmallHex(getHex(abs(memory[i*10+j])),memory[i*10+j]);
-                mt_setbgcolor(GREEN);
+                mt_setbgcolor(CYANIC);
             }
             else
                 coutSmallHex(getHex(abs(memory[i*10+j])),memory[i*10+j]);

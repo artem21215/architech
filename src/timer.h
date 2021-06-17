@@ -1,5 +1,5 @@
 //
-// Created by artem on 16.05.2021.
+// Created by ilya on 16.05.2021.
 //
 
 #ifndef ARCHITECH_TIME_H

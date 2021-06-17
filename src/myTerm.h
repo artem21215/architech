@@ -1,5 +1,5 @@
 //
-// Created by artem on 15.03.2021.
+// Created by ilya on 15.03.2021.
 //
 
 #ifndef ARCHITECTURE_PSEVDO_H

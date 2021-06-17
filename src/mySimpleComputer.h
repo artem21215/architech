@@ -1,5 +1,5 @@
 //
-// Created by artem on 27.04.2021.
+// Created by ilya on 27.04.2021.
 //
 
 #ifndef ARCHITECTURE_MYSIMPLECOMPUTER_H

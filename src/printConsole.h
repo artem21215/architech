@@ -1,5 +1,5 @@
 //
-// Created by artem on 07.05.2021.
+// Created by ilya on 07.05.2021.
 //
 
 #ifndef ARCHITECH_PRINTCONSOLE_H

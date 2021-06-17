@@ -1,5 +1,5 @@
 //
-// Created by artem on 27.04.2021.
+// Created by ilya on 27.04.2021.
 //
 #include <iostream>
 #include <fstream>
@@ -16,35 +16,35 @@ void coutFlags(int deltx,int delty){
         mt_gotoXY(deltx,delty);
         mt_setbgcolor(RED);
         cout << "P";
-        mt_setbgcolor(GREEN);
+        mt_setbgcolor(CYANIC);
     }
     sc_regGet(O,&val);
     if (val!=0){
         mt_gotoXY(deltx,delty+2);
         mt_setbgcolor(RED);
         cout << "O";
-        mt_setbgcolor(GREEN);
+        mt_setbgcolor(CYANIC);
     }
     sc_regGet(M,&val);
     if (val!=0){
         mt_gotoXY(deltx,delty+4);
         mt_setbgcolor(RED);
         cout << "M";
-        mt_setbgcolor(GREEN);
+        mt_setbgcolor(CYANIC);
     }
     sc_regGet(T,&val);
     if (val!=0){
         mt_gotoXY(deltx,delty+6);
         mt_setbgcolor(RED);
         cout << "T";
-        mt_setbgcolor(GREEN);
+        mt_setbgcolor(CYANIC);
     }
     sc_regGet(E,&val);
     if (val!=0){
         mt_gotoXY(deltx,delty+8);
         mt_setbgcolor(RED);
         cout << "E";
-        mt_setbgcolor(GREEN);
+        mt_setbgcolor(CYANIC);
     }
 }
 int sc_memoryInit(){
